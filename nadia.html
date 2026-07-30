@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SMART SCHOOL</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;scroll-behavior:smooth;}
+body{
+background:linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.9)),url("8.jpg") no-repeat center center fixed;
+background-size:cover;background-position:center;background-attachment:fixed;
+color:white;overflow-x:hidden;
+}
+.glass{background:rgba(255,255,255,.06);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.08);box-shadow:0 8px 30px rgba(0,0,0,.35);}
+#sidebar{position:fixed;left:0;top:0;width:270px;height:100vh;z-index:999;}
+.logo{width:110px;height:110px;border-radius:50%;border:4px solid #facc15;object-fit:cover;margin:auto;display:block;}
+.menu{margin-top:35px;}
+.menu a{display:block;padding:18px 30px;color:white;font-weight:bold;text-decoration:none;transition:.35s;border-left:4px solid transparent;}
+.menu a:hover{background:rgba(255,255,255,.08);border-left:4px solid #facc15;padding-left:40px;}
+main{margin-left:270px;}
+header{position:fixed;left:270px;right:0;top:0;height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;z-index:500;}
+.btn{transition:.35s;}
+.btn:hover{transform:translateY(-4px);}
+.card{transition:.4s;border-radius:30px;overflow:hidden;}
+.card:hover{transform:translateY(-10px);}
+#loader{position:fixed;inset:0;background:black;display:flex;justify-content:center;align-items:center;z-index:5000;}
+.loader{font-size:60px;font-weight:900;color:#facc15;animation:pulse 1s infinite;}
+@keyframes pulse{0%{opacity:.4;}50%{opacity:1;}100%{opacity:.4;}}
+@media(max-width:900px){
+#sidebar{transform:translateX(-100%);transition:.4s;}
+#sidebar.show{transform:translateX(0);}
+main{margin-left:0;}
+header{left:0;}
+}
+</style>
+</head>
+<body>
+
+<div id="loader">
+    <div class="loader">SMART SCHOOL</div>
+</div>
+
+<div id="loginPage" class="min-h-screen flex items-center justify-center px-5">
+    <div class="glass w-full max-w-md rounded-[40px] p-10 text-center">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFiEYfcIpTn_K-szwPgTjFwcq163DFSI70ng&s" class="w-36 h-36 mx-auto rounded-full border-4 border-yellow-400 object-cover float mb-6">
+        <h1 class="text-5xl font-black text-yellow-400 glow mb-2">SMART SCHOOL</h1>
+        <p class="text-gray-300 mb-8">ระบบจัดการเรียนออนไลน์</p>
+        <input id="password" type="password" placeholder="กรอกรหัสนักเรียน" class="w-full p-4 rounded-2xl text-black text-center text-lg font-bold outline-none mb-5" onkeypress="if(event.key==='Enter') login()"/>
+        <button onclick="login()" class="btn w-full bg-yellow-400 hover:bg-yellow-300 text-black font-black py-4 rounded-2xl text-lg">
+            🚀 เข้าสู่ระบบ
+        </button>
+    </div>
+</div>
+
+<div id="website" style="display:none;">
+    
+    <aside id="sidebar" class="glass">
+        <div class="p-6 text-center">
+            <img class="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFiEYfcIpTn_K-szwPgTjFwcq163DFSI70ng&s">
+            <h2 class="text-3xl font-black mt-5 text-yellow-400">SMART SCHOOL</h2>
+            <p class="text-gray-400">โพนทองพัฒนาวิทยา</p>
+        </div>
+        <div class="menu">
+            <a href="#home">🏠 หน้าแรก</a>
+            <a href="#subjects">📚 บทเรียน</a>
+            <a href="#attendance">👨‍🎓 เช็กชื่อเข้าเรียน</a>
+            <a href="#assignment">📂 ส่งงาน</a>
+            <a href="#announcement">📢 ข่าวประชาสัมพันธ์</a>
+            <a href="javascript:void(0)" onclick="openTeacher()">👨‍🏫 ระบบครู</a>
+        </div>
+    </aside>
+
+    <header class="glass">
+        <div><h2 id="studentName" class="text-xl font-bold">ผู้ใช้งาน</h2></div>
+        <div><button onclick="logout()" class="bg-red-500 hover:bg-red-400 transition-colors px-5 py-2 rounded-xl font-bold">ออกจากระบบ</button></div>
+    </header>
+
+    <main>
+        <section id="home" class="min-h-screen flex items-center pt-20">
+            <div class="max-w-6xl mx-auto px-10">
+                <h1 class="text-6xl font-black">SMART <span class="text-yellow-400">SCHOOL</span></h1>
+                <p class="text-gray-300 text-xl mt-8">ระบบเรียนออนไลน์ บทเรียน ข้อสอบ ส่งงาน เช็คชื่อ ภายในระบบเดียว</p>
+                <div class="grid lg:grid-cols-3 gap-8 mt-16">
+                    <div class="glass card p-8"><h2 class="text-5xl">🌐</h2><h3 class="text-2xl font-black mt-5">ทันสมัย</h3></div>
+                    <div class="glass card p-8"><h2 class="text-5xl">💻</h2><h3 class="text-2xl font-black mt-5">สะดวก</h3></div>
+                    <div class="glass card p-8"><h2 class="text-5xl">📈</h2><h3 class="text-2xl font-black mt-5">มีประสิทธิภาพ</h3></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="subjects" class="py-24 px-8">
+            <div class="max-w-7xl mx-auto">
+                <h1 class="text-5xl font-black text-center text-yellow-400 mb-16">📚 บทเรียนทั้งหมด</h1>
+                <div id="lessonContainer" class="grid lg:grid-cols-2 gap-8"></div>
+            </div>
+        </section>
+
+        <section id="attendance" class="py-24 px-8">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-5xl font-black text-center text-yellow-400 mb-12">👨‍🎓 เช็กชื่อเข้าเรียน</h1>
+                <div class="glass rounded-[35px] p-10">
+                    <div class="mb-6">
+                        <h3 class="text-xl text-gray-300">ชื่อผู้เรียน</h3>
+                        <h2 id="attendanceStudent" class="text-3xl font-black text-yellow-400 mt-2">-</h2>
+                    </div>
+                    <div class="mb-6">
+                        <label class="font-bold mb-3 block">เลือกวิชา</label>
+                        <select id="attendanceSubject" class="w-full p-4 rounded-xl text-black outline-none" onchange="checkAttendanceStatus()">
+                            <option>ภาษาอังกฤษ</option>
+                            <option>คณิตศาสตร์</option>
+                            <option>วิทยาศาสตร์</option>
+                        </select>
+                    </div>
+                    <button onclick="checkAttendance()" id="attendanceBtn" class="w-full bg-yellow-400 hover:bg-yellow-300 transition-colors text-black font-black py-5 rounded-2xl">
+                        ✅ เช็กชื่อเข้าเรียน
+                    </button>
+                    <div id="attendanceStatus" class="hidden mt-8 glass rounded-2xl p-6"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="assignment" class="py-24 px-8">
+            <div class="max-w-6xl mx-auto">
+                <h1 class="text-5xl font-black text-center text-yellow-400 mb-14">📂 ส่งงาน</h1>
+                <div class="glass rounded-[35px] p-10">
+                    <div class="grid lg:grid-cols-2 gap-10">
+                        <div>
+                            <h2 class="text-3xl font-black mb-8">รายละเอียดงาน</h2>
+                            <label class="block mb-3 font-bold">เลือกวิชา</label>
+                            <select id="assignmentSubject" class="w-full p-4 rounded-xl text-black mb-5 outline-none">
+                                <option>ภาษาอังกฤษ</option><option>คณิตศาสตร์</option><option>วิทยาศาสตร์</option>
+                            </select>
+                            <label class="block mb-3 font-bold">ชื่องาน</label>
+                            <input id="assignmentTitle" type="text" placeholder="เช่น Worksheet บทที่ 1" class="w-full p-4 rounded-xl text-black mb-5 outline-none">
+                            <label class="block mb-3 font-bold">รายละเอียด</label>
+                            <textarea id="assignmentDetail" rows="6" class="w-full p-4 rounded-xl text-black outline-none" placeholder="รายละเอียดงาน..."></textarea>
+                        </div>
+                        <div>
+                            <h2 class="text-3xl font-black mb-8">อัปโหลดไฟล์ลง Google Drive</h2>
+                            <div class="border-2 border-dashed border-yellow-400 rounded-3xl p-10 text-center">
+                                <input id="assignmentFile" type="file" class="hidden" onchange="showFile()">
+                                <button onclick="document.getElementById('assignmentFile').click()" class="bg-yellow-400 hover:bg-yellow-300 text-black px-8 py-4 rounded-2xl font-black transition-colors">📎 เลือกไฟล์</button>
+                                <h2 id="fileName" class="mt-8 text-xl text-gray-300">ยังไม่ได้เลือกไฟล์</h2>
+                                <p class="text-gray-500 mt-3">รองรับ PDF / DOCX / PPTX / JPG / PNG (ไม่เกิน 25MB)</p>
+                            </div>
+                            <div id="uploadProgress" class="hidden mt-6">
+                                <div class="w-full bg-gray-700 rounded-full h-4">
+                                    <div id="progressBar" class="bg-yellow-400 h-4 rounded-full transition-all duration-300" style="width:0%"></div>
+                                </div>
+                                <p id="progressText" class="mt-3 text-center">0%</p>
+                            </div>
+                            <button id="btnSubmitAssignment" onclick="uploadAssignment()" class="w-full bg-green-500 hover:bg-green-400 transition-colors py-5 rounded-2xl font-black text-xl mt-8">📤 ส่งงานขึ้น Google Drive</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="assignmentHistory" class="glass rounded-[35px] p-10 mt-12">
+                    <h2 class="text-3xl font-black text-yellow-400 mb-8">📋 ประวัติการส่งงานของคุณ</h2>
+                    <div id="historyList"><p class="text-gray-400">ยังไม่มีการส่งงาน</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="announcement" class="py-24 px-8">
+            <div class="max-w-6xl mx-auto">
+                <h1 class="text-5xl font-black text-center text-yellow-400 mb-12">📢 ข่าวประชาสัมพันธ์</h1>
+                <div id="studentAnnouncementList">
+                    <div class="glass rounded-3xl p-8 text-center text-gray-400">กำลังโหลดข่าว...</div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<div id="teacherPanel" style="display:none" class="fixed inset-0 bg-black/80 backdrop-blur z-[9999] overflow-auto">
+    <div class="max-w-7xl mx-auto py-10 px-6">
+        <div class="glass rounded-[35px] p-10">
+            <div class="flex justify-between items-center">
+                <h1 class="text-5xl font-black text-yellow-400">👨‍🏫 Teacher Panel</h1>
+                <button onclick="closeTeacher()" class="bg-red-500 hover:bg-red-400 transition-colors px-6 py-3 rounded-xl font-bold">ปิดหน้าต่าง</button>
+            </div>
+            <hr class="my-8 border-white/10">
+            <div class="grid lg:grid-cols-4 gap-6">
+                <div class="glass rounded-3xl p-6">
+                    <h2 class="text-2xl font-black">📊 Dashboard</h2>
+                    <p class="text-gray-400 mt-3">สรุประบบเรียลไทม์</p>
+                    <button onclick="showTeacherTab('dashboard')" class="bg-cyan-500 hover:bg-cyan-400 transition-colors w-full py-3 rounded-xl mt-6 font-bold">เปิด</button>
+                </div>
+                <div class="glass rounded-3xl p-6">
+                    <h2 class="text-2xl font-black">📚 บทเรียน</h2>
+                    <p class="text-gray-400 mt-3">จัดการบทเรียน</p>
+                    <button onclick="showTeacherTab('lesson')" class="bg-yellow-400 hover:bg-yellow-300 transition-colors text-black w-full py-3 rounded-xl mt-6 font-bold">เปิด</button>
+                </div>
+                <div class="glass rounded-3xl p-6">
+                    <h2 class="text-2xl font-black">📝 ข้อสอบ</h2>
+                    <p class="text-gray-400 mt-3">จัดการข้อสอบ</p>
+                    <button onclick="showTeacherTab('quiz')" class="bg-green-500 hover:bg-green-400 transition-colors w-full py-3 rounded-xl mt-6 font-bold">เปิด</button>
+                </div>
+                <div class="glass rounded-3xl p-6">
+                    <h2 class="text-2xl font-black">📢 ประกาศ</h2>
+                    <p class="text-gray-400 mt-3">ข่าวสารประชาสัมพันธ์</p>
+                    <button onclick="showTeacherTab('news')" class="bg-blue-500 hover:bg-blue-400 transition-colors w-full py-3 rounded-xl mt-6 font-bold">เปิด</button>
+                </div>
+            </div>
+            <div id="teacherContent" class="mt-10">
+                <h2 class="text-2xl text-gray-400 text-center py-20">👆 เลือกระบบที่ต้องการจัดการจากเมนูด้านบน</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbxRiqi5wiUYrcpQZiiV-SU6GkDw8NFRbkkVavp97OBj0uHdhcvcvgfJv9L7FI71SKYNGg/exec";
+
+let students = {
+    "31740":"นายจิระวัฒน์ ทศกร",
+    "32276":"นายติณณ์ เกื้อหนองขุ่น",
+    "32244":"นายตุลธร เพชรสุทธิ์",
+    "32037":"นายทีปกร เนินแสง",
+    "31743":"นายธนพล พลาโส",
+    "32247":"นายธนพล มนตรีโพธิ์",
+    "32249":"เด็กชายนรากานต์ มาศรักษา",
+    "33581":"นายนวพล ศิริสุวิชา",
+    "31784":"นายบุญญ์บริบูรณ์ พลวี",
+    "31785":"นายปรัชญา ชินทะวัน",
+    "31786":"นายเป็นหนึ่ง ชลสาร",
+    "31745":"นายพชรพล กุมผัน",
+    "31789":"นายภณวัจน์ ซอยรัมย์",
+    "31790":"นายภาสวีส์ พลเยี่ยม",
+    "31753":"นายภูสิทธิ์ ตรีโอษฐ์",
+    "31793":"นายวรัญญู ทองวงษ์",
+    "31794":"นายศักรินทร์ วรรณสุทธิ์",
+    "31796":"นายสิรวิทย์ ประดับพันธ์",
+    "31797":"นายอาณาวิน ศรีอำพล",
+    "31877":"นายเอกวิทย์ อยู่ไพร",
+    "31839":"นางสาวกนกวรรณ เมืองพิน",
+    "31798":"นางสาวกนอร มีชัย",
+    "33608":"นางสาวจิดาภา คำแดงไสย",
+    "31760":"นางสาวจีรนันท์ แวงวรรณ",
+    "33615":"นางสาวชลดา บุตรพรม",
+    "31765":"นางสาวณิชานันท์ แวงวรรณ",
+    "33624":"นางสาวธารารัตน์ จูนิพัทธ์",
+    "33625":"นางสาวธิดาวรรณ ฤทธิขันธ์",
+    "31769":"นางสาวปภัสรา แสงกล้า",
+    "31770":"นางสาวปภากานต์ นพคุณ",
+    "31851":"นางสาวพิมพ์ชนก ชายสวัสดิ์",
+    "32145":"นางสาวภคพร พิมพ์หอม",
+    "32186":"นางสาวภัทรวดี ทับบุญ",
+    "31816":"นางสาววรัญญา น้อยศรี",
+    "31856":"นางสาววริศรา ปรีชาเจริญกิจ",
+    "33650":"นางสาวศิริวดี โชติแสง",
+    "31820":"นางสาวสิริวรรณ ดาวงศ์กลาง",
+    "33655":"นางสาวสุพิชญา นุ่นนาแซง",
+    "31861":"นางสาวอภิญญา แสงรีย์",
+    "31778":"นางสาวอุมารินทร์ พลเยี่ยม",
+    "131253": "nadia admin",
+    "1234": "คุณครู"
+};
+
+const lessons = [
+    {subject:"ภาษาอังกฤษ", color:"yellow", chapters:[{title:"บทที่ 1 Introduction", video:"https://www.youtube.com/watch?v=JgC78zAA4r4", pdf:"#"}, {title:"บทที่ 2 Grammar", video:"https://www.youtube.com/watch?v=IznbxGpQsuA", pdf:"#"}]},
+    {subject:"คณิตศาสตร์", color:"blue", chapters:[{title:"บทที่ 1 จำนวนจริง", video:"https://www.youtube.com/watch?v=Q6Gi9LhoEO4&list=PLQxsarUutSDlyP0BIypvnUZHqcM9np6Pa&index=3&t=349s", pdf:"#"}]},
+    {subject:"วิทยาศาสตร์", color:"green", chapters:[{title:"บทที่ 1 เซลล์ของสิ่งมีชีวิต", video:"https://www.youtube.com/watch?v=rbIP2Vyrv7M&list=PLtrDgrf3KiXHDIfZxqXjMFqoZmU97g7uZ&index=5", pdf:"#"}]}
+];
+
+let assignments = [];
+let announcements = [];
+let attendanceData = [];
+
+const teacherPassword = "1234";
+
+window.onload = async () => {
+    loadLessons();
+    await loadDataFromSheets();
+    setTimeout(() => { document.getElementById("loader").style.display = "none"; }, 800);
+};
+
+async function loadDataFromSheets() {
+    try {
+        const resStudents = await fetch(`${API_URL}?action=getStudents`);
+        const remoteStudents = await resStudents.json();
+        if(remoteStudents && Object.keys(remoteStudents).length > 0){
+            students = remoteStudents;
+        }
+
+        const resAtt = await fetch(`${API_URL}?action=getAttendance`);
+        attendanceData = await resAtt.json() || [];
+
+        const resAnn = await fetch(`${API_URL}?action=getAnnouncements`);
+        announcements = await resAnn.json() || [];
+
+        renderStudentAnnouncements();
+    } catch(e) {
+        console.log("เชื่อมต่อ Google Sheets สำรอง:", e);
+    }
+}
+
+function login() {
+    const pass = document.getElementById("password").value.trim();
+    if (pass === "") { alert("กรุณากรอกรหัสนักเรียน"); return; }
+    if (!students[pass]) { alert("ไม่พบรหัสนักเรียนในระบบ"); return; }
+
+    document.getElementById("studentName").textContent = students[pass];
+    document.getElementById("attendanceStudent").textContent = students[pass];
+
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("website").style.display = "block";
+
+    checkAttendanceStatus();
+    renderAssignments();
+}
+
+function logout() {
+    if(!confirm("คุณต้องการออกจากระบบใช่หรือไม่?")) return;
+    document.getElementById("password").value = "";
+    document.getElementById("website").style.display = "none";
+    document.getElementById("loginPage").style.display = "flex";
+    closeTeacher();
+}
+
+function loadLessons(){
+    const container = document.getElementById("lessonContainer");
+    if(!container) return;
+    container.innerHTML = "";
+    lessons.forEach(subject => {
+        let html = `<div class="glass rounded-[35px] p-8"><h2 class="text-3xl font-black text-${subject.color}-400 mb-8">📘 ${subject.subject}</h2>`;
+        subject.chapters.forEach((chapter, index) => {
+            html += `<div class="glass rounded-2xl p-6 mb-5"><div class="flex justify-between items-center flex-wrap gap-4">
+            <div><h3 class="text-xl font-black">${chapter.title}</h3><p class="text-gray-400">บทเรียนที่ ${index+1}</p></div>
+            <div class="flex flex-wrap gap-3">
+                <a href="${chapter.video}" target="_blank" class="bg-red-500 hover:bg-red-400 px-5 py-3 rounded-xl font-bold transition-colors">🎥 วิดีโอ</a>
+                <button onclick="openQuiz('${subject.subject}','${chapter.title}')" class="bg-green-500 hover:bg-green-400 px-5 py-3 rounded-xl font-bold transition-colors">📝 แบบฝึก</button>
+            </div></div></div>`;
+        });
+        html += `</div>`;
+        container.innerHTML += html;
+    });
+}
+
+function openQuiz(subject, chapter) { 
+    alert(`ระบบแบบทดสอบวิชา ${subject} (${chapter}) \n\nกำลังอยู่ในช่วงพัฒนา 🚧`); 
+}
+
+function showFile(){
+    const file = document.getElementById("assignmentFile").files[0];
+    if(file){ document.getElementById("fileName").innerHTML = "📄 " + file.name; }
+}
+
+function getBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = error => reject(error);
+    });
+}
+
+async function uploadAssignment(){
+    const subject = document.getElementById("assignmentSubject").value;
+    const title = document.getElementById("assignmentTitle").value.trim();
+    const detail = document.getElementById("assignmentDetail").value.trim();
+    const file = document.getElementById("assignmentFile").files[0];
+    const student = document.getElementById("studentName").innerText;
+    
+    if(title === ""){ alert("กรุณากรอกชื่องาน"); return; }
+    if(!file){ alert("กรุณาเลือกไฟล์"); return; }
+    if(file.size > 25*1024*1024){ alert("ไฟล์ต้องมีขนาดไม่เกิน 25 MB"); return; }
+    
+    const btnSubmit = document.getElementById("btnSubmitAssignment");
+    btnSubmit.disabled = true;
+    btnSubmit.innerHTML = "⏳ กำลังอัปโหลดไฟล์ลง Google Drive...";
+    document.getElementById("uploadProgress").classList.remove("hidden");
+    
+    let progress = 0;
+    const bar = document.getElementById("progressBar");
+    const text = document.getElementById("progressText");
+    
+    const timer = setInterval(() => {
+        if(progress < 90) progress += 10;
+        bar.style.width = progress + "%";
+        text.innerHTML = progress + "%";
+    }, 300);
+
+    try {
+        const base64Data = await getBase64(file);
+
+        const payload = {
+            action: "addAssignment",
+            student: student,
+            subject: subject,
+            title: title,
+            detail: detail,
+            fileName: file.name,
+            fileType: file.type || "application/octet-stream",
+            fileData: base64Data,
+            date: new Date().toLocaleString("th-TH")
+        };
+
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+        clearInterval(timer);
+        bar.style.width = "100%";
+        text.innerHTML = "100%";
+
+        payload.fileUrl = result.fileUrl;
+        assignments.unshift(payload);
+        renderAssignments();
+
+        document.getElementById("assignmentTitle").value = "";
+        document.getElementById("assignmentDetail").value = "";
+        document.getElementById("assignmentFile").value = "";
+        document.getElementById("fileName").innerHTML = "ยังไม่ได้เลือกไฟล์";
+        document.getElementById("uploadProgress").classList.add("hidden");
+        bar.style.width = "0%";
+        
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = "📤 ส่งงานขึ้น Google Drive";
+        alert("✅ อัปโหลดไฟล์ลง Google Drive และบันทึกลง Sheets เรียบร้อยแล้ว!");
+    } catch (e) {
+        clearInterval(timer);
+        alert("เกิดข้อผิดพลาดในการอัปโหลด: " + e.message);
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = "📤 ส่งงานขึ้น Google Drive";
+    }
+}
+
+function renderAssignments(){
+    const list = document.getElementById("historyList");
+    const studentName = document.getElementById("studentName").innerText;
+    list.innerHTML = "";
+    
+    const myAssignments = assignments.filter(item => item.student === studentName);
+    
+    if(myAssignments.length === 0){ 
+        list.innerHTML = `<p class="text-gray-400">ยังไม่มีประวัติการส่งงาน</p>`; 
+        return; 
+    }
+    
+    myAssignments.forEach(item => {
+        const fileLink = item.fileUrl || item.fileName || item.file;
+        const isUrl = fileLink && (fileLink.startsWith("http://") || fileLink.startsWith("https://"));
+        
+        list.innerHTML += `
+        <div class="glass rounded-2xl p-6 mb-5 border-l-4 border-green-500">
+            <h2 class="text-2xl font-black text-yellow-400">${item.title}</h2>
+            <div class="grid md:grid-cols-2 gap-2 mt-3 text-gray-300">
+                <p>📚 วิชา: ${item.subject}</p>
+                <p>📄 ไฟล์: ${isUrl ? `<a href="${fileLink}" target="_blank" class="text-cyan-400 underline font-bold">🔗 เปิดดูไฟล์ใน Google Drive</a>` : (item.fileName || item.file)}</p>
+                <p>🕒 เวลาส่ง: ${item.date}</p>
+                <p>📝 รายละเอียด: ${item.detail || "-"}</p>
+            </div>
+            <span class="inline-block mt-4 bg-green-500/20 text-green-400 border border-green-500 px-4 py-2 rounded-xl font-bold text-sm">✅ บันทึกใน Google Drive & Sheets แล้ว</span>
+        </div>`;
+    });
+}
+
+async function checkAttendance() {
+    const student = document.getElementById("studentName").innerText;
+    const subject = document.getElementById("attendanceSubject").value;
+    const today = new Date().toLocaleDateString("th-TH");
+    const now = new Date();
+
+    const already = attendanceData.find(item => item.student === student && item.date === today && item.subject === subject);
+
+    if(already) {
+        alert(`วันนี้คุณได้เช็กชื่อวิชา ${subject} ไปแล้ว`);
+        return;
+    }
+
+    const btn = document.getElementById("attendanceBtn");
+    btn.disabled = true;
+    btn.innerHTML = "⏳ กำลังบันทึกลง Google Sheets...";
+
+    const payload = {
+        action: "checkAttendance",
+        student: student,
+        subject: subject,
+        date: today,
+        time: now.toLocaleTimeString("th-TH")
+    };
+
+    try {
+        await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+        });
+
+        attendanceData.push(payload);
+        checkAttendanceStatus();
+        alert("✅ เช็กชื่อบันทึกลง Google Sheets สำเร็จ!");
+    } catch(e) {
+        alert("ไม่สามารถเชื่อมต่อ Google Sheets ได้");
+        btn.disabled = false;
+        btn.innerHTML = "✅ เช็กชื่อเข้าเรียน";
+    }
+}
+
+function checkAttendanceStatus() {
+    const student = document.getElementById("studentName").innerText;
+    const subject = document.getElementById("attendanceSubject").value;
+    const today = new Date().toLocaleDateString("th-TH");
+    const btn = document.getElementById("attendanceBtn");
+    const status = document.getElementById("attendanceStatus");
+
+    const data = attendanceData.find(item => item.student === student && item.date === today && item.subject === subject);
+
+    if (data) {
+        btn.disabled = true;
+        btn.classList.remove("bg-yellow-400", "hover:bg-yellow-300");
+        btn.classList.add("bg-green-500");
+        btn.innerHTML = "✅ เช็กชื่อแล้ว";
+        
+        status.classList.remove("hidden");
+        status.innerHTML = `
+            <div class="flex items-center gap-4">
+                <div class="text-5xl">🎓</div>
+                <div>
+                    <h2 class="text-2xl font-black text-green-400">บันทึกเวลาเรียนเรียบร้อย (บันทึกลง Sheets แล้ว)</h2>
+                    <p class="mt-2 text-gray-300">วิชา: <span class="font-bold text-white">${data.subject}</span></p>
+                    <p class="text-gray-300">เวลา: <span class="font-bold text-white">${data.date} ${data.time}</span></p>
+                </div>
+            </div>
+        `;
+    } else {
+        btn.disabled = false;
+        btn.classList.add("bg-yellow-400", "hover:bg-yellow-300");
+        btn.classList.remove("bg-green-500");
+        btn.innerHTML = "✅ เช็กชื่อเข้าเรียน";
+        status.classList.add("hidden");
+    }
+}
+
+function openTeacher(){
+    const pass = prompt("กรุณากรอกรหัสผ่านสำหรับครู ");
+    if(pass !== teacherPassword){ 
+        if(pass !== null) alert("รหัสผ่านไม่ถูกต้อง!"); 
+        return; 
+    }
+    document.getElementById("teacherPanel").style.display = "block";
+    renderDashboard();
+}
+
+function closeTeacher(){ 
+    document.getElementById("teacherPanel").style.display = "none"; 
+}
+
+function showTeacherTab(tab){
+    const content = document.getElementById("teacherContent");
+    switch(tab){    
+        case "dashboard": renderDashboard(); break;
+        case "lesson": 
+            content.innerHTML=`<div class="glass rounded-3xl p-8 text-center"><h2 class='text-4xl font-black text-yellow-400 mb-4'>📚 จัดการบทเรียน</h2><p class="text-gray-400 text-xl">ระบบเพิ่ม/ลบเนื้อหาบทเรียน กำลังอยู่ในช่วงพัฒนา 🚧</p></div>`; 
+            break;
+        case "quiz": 
+            content.innerHTML=`<div class="glass rounded-3xl p-8 text-center"><h2 class='text-4xl font-black text-green-400 mb-4'>📝 จัดการข้อสอบ</h2><p class="text-gray-400 text-xl">ระบบสร้างข้อสอบออนไลน์ กำลังอยู่ในช่วงพัฒนา 🚧</p></div>`; 
+            break;
+        case "news": 
+            openAnnouncementManager(); 
+            break;
+    }
+}
+
+function renderDashboard(){
+    const content = document.getElementById("teacherContent");
+    const today = new Date().toLocaleDateString("th-TH");
+
+    content.innerHTML = `
+    <h1 class="text-4xl font-black text-cyan-400 mb-8">📊 สรุปภาพรวมระบบ (ดึงข้อมูลสดจาก Google Sheets)</h1>
+    <div class="grid lg:grid-cols-5 gap-4">
+        <div class="glass rounded-3xl p-6 text-center"><div class="text-5xl mb-2">👨‍🎓</div><h3 class="text-gray-300">นักเรียนในระบบ</h3><h1 class="text-4xl font-black mt-2 text-white">${Object.keys(students).length}</h1></div>
+        <div class="glass rounded-3xl p-6 text-center"><div class="text-5xl mb-2">📚</div><h3 class="text-gray-300">รายวิชาทั้งหมด</h3><h1 class="text-4xl font-black mt-2 text-white">${lessons.length}</h1></div>
+        <div class="glass rounded-3xl p-6 text-center"><div class="text-5xl mb-2">✅</div><h3 class="text-gray-300">การเช็กชื่อวันนี้</h3><h1 class="text-4xl font-black mt-2 text-white">${attendanceData.filter(a => a.date === today).length}</h1></div>
+        <div class="glass rounded-3xl p-6 text-center"><div class="text-5xl mb-2">📂</div><h3 class="text-gray-300">งานที่ส่งแล้ว</h3><h1 class="text-4xl font-black mt-2 text-white">${assignments.length}</h1></div>
+        <div class="glass rounded-3xl p-6 text-center"><div class="text-5xl mb-2">📢</div><h3 class="text-gray-300">ประกาศทั้งหมด</h3><h1 class="text-4xl font-black mt-2 text-white">${announcements.length}</h1></div>
+    </div>
+    <div class="grid lg:grid-cols-2 gap-6 mt-8">
+        <div class="glass rounded-3xl p-8">
+            <h2 class="text-2xl font-black text-yellow-400 mb-6">📈 สถานะการเชื่อมต่อ</h2>
+            <div class="space-y-4 text-lg">
+                <p class="flex justify-between"><span>Google Sheets API</span> <span class="text-green-400 font-bold">● เชื่อมต่อแล้ว</span></p>
+                <p class="flex justify-between"><span>Google Drive Storage</span> <span class="text-green-400 font-bold">● เชื่อมต่อแล้ว</span></p>
+                <p class="flex justify-between"><span>ระบบเช็กชื่อเรียลไทม์</span> <span class="text-green-400 font-bold">● พร้อมใช้งาน</span></p>
+            </div>
+        </div>
+    </div>`;
+}
+
+function openAnnouncementManager(){
+    const content = document.getElementById("teacherContent");
+    content.innerHTML = `
+    <div class="glass rounded-3xl p-8">
+        <h2 class="text-3xl font-black text-blue-400">📢 จัดการข่าวประชาสัมพันธ์</h2>
+        <div class="grid md:grid-cols-2 gap-5 mt-6">
+            <input id="newsTitle" class="p-4 rounded-xl text-black outline-none font-bold" placeholder="หัวข้อประกาศ">
+            <input id="newsDate" type="date" class="p-4 rounded-xl text-black outline-none">
+        </div>
+        <textarea id="newsDetail" rows="4" class="w-full p-4 rounded-xl text-black mt-5 outline-none" placeholder="รายละเอียดประกาศ..."></textarea>
+        <button id="btnSaveNews" onclick="saveAnnouncement()" class="bg-blue-500 hover:bg-blue-400 transition-colors px-8 py-4 rounded-xl font-bold mt-6 w-full md:w-auto">💾 บันทึกลง Google Sheets</button>
+        <hr class="my-8 border-white/10">
+        <div id="announcementManagerList" class="space-y-4"></div>
+    </div>`;
+    renderAnnouncementManagerList();
+}
+
+async function saveAnnouncement(){
+    const title = document.getElementById("newsTitle").value.trim();
+    const detail = document.getElementById("newsDetail").value.trim();
+    const dateInput = document.getElementById("newsDate").value;
+    
+    if(title === "" || detail === ""){ alert("กรุณากรอกหัวข้อและรายละเอียดให้ครบถ้วน"); return; }
+    
+    let displayDate = new Date().toLocaleDateString("th-TH");
+    if(dateInput) {
+        const d = new Date(dateInput);
+        displayDate = d.toLocaleDateString("th-TH");
+    }
+
+    const btn = document.getElementById("btnSaveNews");
+    btn.disabled = true;
+    btn.innerHTML = "⏳ กำลังบันทึก...";
+
+    const payload = {
+        action: "addAnnouncement",
+        title: title,
+        detail: detail,
+        date: displayDate
+    };
+
+    try {
+        await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+        });
+
+        announcements.unshift({ id: Date.now(), title, detail, date: displayDate });
+        alert("เพิ่มประกาศลง Google Sheets เรียบร้อยแล้ว");
+        
+        document.getElementById("newsTitle").value = "";
+        document.getElementById("newsDetail").value = "";
+        document.getElementById("newsDate").value = "";
+        
+        renderAnnouncementManagerList();
+        renderStudentAnnouncements();
+    } catch(e) {
+        alert("ไม่สามารถบันทึกประกาศได้");
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = "💾 บันทึกลง Google Sheets";
+    }
+}
+
+function renderAnnouncementManagerList(){
+    const list = document.getElementById("announcementManagerList");
+    if(!list) return;
+    list.innerHTML = "";
+    
+    if(announcements.length === 0){
+        list.innerHTML = `<p class="text-center text-gray-400 py-4">ยังไม่มีประกาศในระบบ</p>`;
+        return;
+    }
+    
+    announcements.forEach((item, index) => {
+        list.innerHTML += `
+        <div class="glass rounded-2xl p-5 flex justify-between items-center">
+            <div>
+                <h3 class="text-xl font-bold text-yellow-400">${item.title}</h3>
+                <p class="text-gray-300 mt-1">${item.detail}</p>
+                <span class="text-sm text-gray-400 mt-2 block">📅 ${item.date}</span>
+            </div>
+            <button onclick="deleteAnnouncement(${index})" class="bg-red-500 hover:bg-red-400 px-4 py-2 rounded-xl font-bold text-sm">ลบ</button>
+        </div>`;
+    });
+}
+
+function renderStudentAnnouncements() {
+    const list = document.getElementById("studentAnnouncementList");
+    if(!list) return;
+    list.innerHTML = "";
+    
+    if(announcements.length === 0){
+        list.innerHTML = `<div class="glass rounded-3xl p-8 text-center text-gray-400">ยังไม่มีข่าวประชาสัมพันธ์ในขณะนี้</div>`;
+        return;
+    }
+    
+    announcements.forEach(item => {
+        list.innerHTML += `
+        <div class="glass rounded-3xl p-8 mb-6 border-l-4 border-yellow-400">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-3xl font-black text-yellow-400">${item.title}</h2>
+                <span class="text-gray-400">📅 ${item.date}</span>
+            </div>
+            <p class="text-gray-200 text-lg leading-relaxed whitespace-pre-line">${item.detail}</p>
+        </div>`;
+    });
+}
+
+function deleteAnnouncement(index) {
+    if(!confirm("คุณต้องการลบประกาศนี้ใช่หรือไม่?")) return;
+    announcements.splice(index, 1);
+    renderAnnouncementManagerList();
+    renderStudentAnnouncements();
+}
+</script>
+</body>
+</html>
